@@ -24,7 +24,8 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String EXPENSE_TABLE_NAME = "Category";
     public static final String EXPENSE_COLUMN_ID = "id";
     public static final String EXPENSE_COLUMN_CATEGORY_NAME = "category_name";
-   // public static final String EXPENSE_COLUMN_CATEGORY_IDENTIFIER = "identifier";
+    public static final String EXPENSE_COLUMN_CATEGORY_BUDGET = "budget";
+    public static final String EXPENSE_COLUMN_CATEGORY_IDENTIFIER = "identifier";
 
     public static final String EXPENSE_TABLE_ADD = "Add_Expense";
     public static final String EXPENSE_ADD_COLUMN_ID = "add_id";
@@ -46,7 +47,7 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        String createTable = "create table Category (id integer primary key AUTOINCREMENT, category_name, identifier);";
+        String createTable = "create table Category (id integer primary key AUTOINCREMENT, category_name, identifier, budget);";
         db.execSQL(createTable);
 
         String createTableAdd = "create table Add_Expense (add_id integer primary key AUTOINCREMENT, category_add, amount, date, note);";
