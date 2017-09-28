@@ -50,7 +50,7 @@ public class Tab1 extends Activity {
 
                 if (category_name.trim().length() > 0) {
                     DBHelper db = new DBHelper(getApplicationContext());
-                    db.insertCategory(category_name, null);
+                    db.insertCategory(category_name, 0);
 
 
                     categoryNameInputLabel.setText("");
@@ -87,34 +87,38 @@ public class Tab1 extends Activity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                showEditBox(listViews.get(position).getName().toString(), position);
+                showEditBox(listViews.get(position).getName(), listViews.get(position).getBudget(), position);
             }
         });
     }
 
-    public void showEditBox(final String oldItem, final Integer id){
+    public void showEditBox(final String oldItem, Integer oldBudget, final Integer id){
         final Dialog dialog = new Dialog(Tab1.this);
         dialog.setCancelable(true);
         dialog.setTitle("Update / Delete Category");
         dialog.setContentView(R.layout.edit_category);
-        final EditText editText = (EditText)dialog.findViewById(R.id.editCategory);
-        editText.setText(oldItem);
+        final EditText editName = (EditText)dialog.findViewById(R.id.editCategory);
+        final EditText editBudget = (EditText)dialog.findViewById(R.id.editBudget);
+        editName.setText(oldItem);
+        editBudget.setText("" + oldBudget);
         Button btn = (Button)dialog.findViewById(R.id.btnDone);
         Button delete = (Button)dialog.findViewById(R.id.btnCancelEdit);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 DBHelper db = new DBHelper(getApplicationContext());
                 //Update Category
                 int ids = listViews.get(id).getId();
                 tab1_adapter.notifyDataSetChanged();
 
-                String category_name = editText.getText().toString();
-                editText.setText("");
-                db.updateCategory(ids, category_name);
+                String category_name = editName.getText().toString();
+                Integer budget = new Integer(editBudget.getText().toString());
+                System.out.println("Budget: " + budget);
+                editName.setText("");
+                editBudget.setText("");
+                db.updateCategory(ids, category_name, budget);
 
-                Toast.makeText(Tab1.this, "Category name edited to "+ category_name, Toast.LENGTH_SHORT).show();
+                Toast.makeText(Tab1.this, "Category name edited to "+ category_name + "Budget:" + budget, Toast.LENGTH_SHORT).show();
                 loadListView();
                 dialog.dismiss();
 

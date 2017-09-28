@@ -21,7 +21,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String CATEGORY_TABLE_NAME = "Category";
     public static final String CATEGORY_COLUMN_ID = "id";
     public static final String CATEGORY_COLUMN_CATEGORY_NAME = "category_name";
-    //public static final String CATEGORY_COLUMN_BUDGET_NAME = "budget";
+    public static final String CATEGORY_COLUMN_BUDGET_NAME = "budget";
     //public static final String EXPENSE_COLUMN_CATEGORY_IDENTIFIER = "identifier";
 
     public static final String EXPENSE_TABLE_ADD = "Add_Expense";
@@ -44,7 +44,7 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        String createTable = "create table Category (id integer primary key AUTOINCREMENT, category_name, identifier, budget);";
+        String createTable = "create table Category (id integer primary key AUTOINCREMENT, category_name, budget);";
         db.execSQL(createTable);
 
         String createTableAdd = "create table Add_Expense (add_id integer primary key AUTOINCREMENT, category_add, amount, date, note);";
@@ -58,12 +58,12 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
-    public void insertCategory(String category_name, String budgetAmount) {
+    public void insertCategory(String category_name, Integer budgetAmount) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(CATEGORY_COLUMN_CATEGORY_NAME, category_name);//column name, column value
-        //values.put(CATEGORY_COLUMN_BUDGET_NAME, budgetAmount);
+        values.put(CATEGORY_COLUMN_BUDGET_NAME, budgetAmount);
 
         // Inserting Row
         db.insert(CATEGORY_TABLE_NAME, null, values);//tableName, nullColumnHack, ContentValues
@@ -113,12 +113,23 @@ public class DBHelper extends SQLiteOpenHelper {
         return numRowsAdd;
     }
 
-    public boolean updateCategory(Integer id, String name/*, String budget*/) {
+    public boolean updateCategory(Integer id, String name, Integer budget) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(CATEGORY_COLUMN_ID, id);
         contentValues.put(CATEGORY_COLUMN_CATEGORY_NAME, name);
-        //contentValues.put(CATEGORY_COLUMN_BUDGET_NAME, budget);
+        contentValues.put(CATEGORY_COLUMN_BUDGET_NAME, budget);
+
+        db.update(CATEGORY_TABLE_NAME, contentValues, CATEGORY_COLUMN_ID + "=" +id, null);
+        return true;
+    }
+
+    public boolean updateCategory(Integer id, String name) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(CATEGORY_COLUMN_ID, id);
+        contentValues.put(CATEGORY_COLUMN_CATEGORY_NAME, name);
+
 
         db.update(CATEGORY_TABLE_NAME, contentValues, CATEGORY_COLUMN_ID + "=" +id, null);
         return true;
@@ -242,7 +253,7 @@ public class DBHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery("SELECT * FROM Category", null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
-            overList = new Tab1_ListView(cursor.getInt(0), cursor.getString(1));
+            overList = new Tab1_ListView(cursor.getInt(0), cursor.getString(1), cursor.getInt(2));
             listOverview.add(overList);
             cursor.moveToNext();
         }

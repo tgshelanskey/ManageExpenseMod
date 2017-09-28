@@ -10,29 +10,22 @@
         android:id="@+id/txtCategoryName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/txtID"
-        android:layout_toLeftOf="@+id/btnDelete"
-        android:layout_toRightOf="@+id/txtID"
         android:padding="3dp"
         android:text="Category Name"
         android:textColor="@android:color/black"
-        android:textSize="24sp" />
+        android:textSize="24sp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true" />
 
     <TextView
-        android:id="@+id/txtCategoryId"
+        android:id="@+id/txtCategoryBudget"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/txtCategoryName"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/txtCategoryName"
-        android:layout_toRightOf="@+id/txtCategoryName"
-        android:text="Id"
-        android:textAlignment="center"
-        android:textColor="@android:color/black"
+        android:text="Budget"
         android:textSize="24sp"
-        android:textStyle="bold" />
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true" />
 
 </RelativeLayout>
