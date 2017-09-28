@@ -7,19 +7,33 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="3dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/txtNameList"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:text="Name"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+        android:orientation="horizontal"
+        android:id="@+id/linearLayout">
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/txtIdList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/txtNameList"
+        android:layout_alignEnd="@+id/linearLayout"
+        android:layout_alignRight="@+id/linearLayout"
+        android:layout_below="@+id/linearLayout"
+        android:layout_toRightOf="@+id/txtNameList"
+        android:layout_weight="1"
+        android:text="Id" />
+
+    <TextView
+        android:id="@+id/txtNameList"
+        android:layout_width="189dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/linearLayout"
+        android:layout_alignStart="@+id/linearLayout"
+        android:layout_below="@+id/linearLayout"
+        android:layout_weight="1"
+        android:text="Name"
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
 </RelativeLayout>

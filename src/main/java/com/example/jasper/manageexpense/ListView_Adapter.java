@@ -40,9 +40,12 @@ public class ListView_Adapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = View.inflate(context, R.layout.listview_name, null);
         TextView txtName = (TextView)view.findViewById(R.id.txtNameList);
+        TextView txtId = (TextView)view.findViewById(R.id.txtIdList);
         //RadioButton radioButton = (RadioButton)view.findViewById(R.id.btnRadio);
 
         txtName.setText(listView_lists.get(position).getName());
+        txtId.setText(listView_lists.get(position).getId());
+
         //radioButton.setClickable(true);
         return view;
     }

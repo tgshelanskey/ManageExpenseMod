@@ -48,7 +48,9 @@ public class Tab1_Adapter extends BaseAdapter {
         View view = View.inflate(context, R.layout.tab1_list, null);
 
         TextView txtCategoryName = (TextView)view.findViewById(R.id.txtCategoryName);
+        TextView txtCategoryId = (TextView)view.findViewById(R.id.txtCategoryId);
         txtCategoryName.setText(records.get(position).getName());
+        txtCategoryId.setText("" + records.get(position).getId());
 
         return view;
     }

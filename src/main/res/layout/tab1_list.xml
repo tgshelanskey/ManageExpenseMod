@@ -19,4 +19,20 @@
         android:textColor="@android:color/black"
         android:textSize="24sp" />
 
+    <TextView
+        android:id="@+id/txtCategoryId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/txtCategoryName"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/txtCategoryName"
+        android:layout_toRightOf="@+id/txtCategoryName"
+        android:text="Id"
+        android:textAlignment="center"
+        android:textColor="@android:color/black"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
 </RelativeLayout>

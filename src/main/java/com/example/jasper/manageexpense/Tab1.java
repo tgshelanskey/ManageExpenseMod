@@ -3,36 +3,17 @@ package com.example.jasper.manageexpense;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
-import android.util.SparseBooleanArray;
-import android.view.Menu;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.flask.colorpicker.ColorPickerView;
-import com.flask.colorpicker.OnColorSelectedListener;
-import com.flask.colorpicker.builder.ColorPickerClickListener;
-import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
-
-import net.margaritov.preference.colorpicker.ColorPickerDialog;
-import net.margaritov.preference.colorpicker.ColorPickerPreference;
-
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -43,7 +24,8 @@ public class Tab1 extends Activity {
     ListView listView;
     Button btnAdd;
     Button cancel;
-    EditText inputLabel;
+    EditText categoryNameInputLabel;
+    EditText categoryBudgetInputLabel;
     List<Tab1_ListView> listViews;
     Tab1_Adapter tab1_adapter;
     DBHelper dbHelper;
@@ -56,25 +38,26 @@ public class Tab1 extends Activity {
         listView = (ListView) findViewById(R.id.listAddCategory);
         btnAdd = (Button) findViewById(R.id.btnAddCategory);
         cancel = (Button) findViewById(R.id.btnCancelAdd);
-        inputLabel = (EditText) findViewById(R.id.week_view_category);
+        categoryNameInputLabel = (EditText) findViewById(R.id.week_view_category);
+        //categoryBudgetInputLabel = (EditText) findViewById(R.id.week_view_category);
 
         loadListView();
 
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                String category_name = inputLabel.getText().toString();
+                String category_name = categoryNameInputLabel.getText().toString();
 
                 if (category_name.trim().length() > 0) {
                     DBHelper db = new DBHelper(getApplicationContext());
-                    db.insertCategory(category_name);
+                    db.insertCategory(category_name, null);
 
 
-                    inputLabel.setText("");
+                    categoryNameInputLabel.setText("");
 
                     InputMethodManager imm = (InputMethodManager)
                             getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(inputLabel.getWindowToken(), 0);
+                    imm.hideSoftInputFromWindow(categoryNameInputLabel.getWindowToken(), 0);
 
                     Toast.makeText(getApplication(), "Successfully Added!", Toast.LENGTH_SHORT).show();
                     loadListView();
@@ -127,11 +110,11 @@ public class Tab1 extends Activity {
                 int ids = listViews.get(id).getId();
                 tab1_adapter.notifyDataSetChanged();
 
-                String Category_name = editText.getText().toString();
+                String category_name = editText.getText().toString();
                 editText.setText("");
-                db.updateCategory(ids,Category_name);
+                db.updateCategory(ids, category_name);
 
-                Toast.makeText(Tab1.this, "Category name edited to "+ Category_name, Toast.LENGTH_SHORT).show();
+                Toast.makeText(Tab1.this, "Category name edited to "+ category_name, Toast.LENGTH_SHORT).show();
                 loadListView();
                 dialog.dismiss();
 

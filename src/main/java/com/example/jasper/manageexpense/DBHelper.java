@@ -4,15 +4,12 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
-import java.util.Set;
 
 /**
  * Created by Jasper on 2/24/2017.
@@ -21,11 +18,11 @@ import java.util.Set;
 public class DBHelper extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "ExpenseManager.db";
-    public static final String EXPENSE_TABLE_NAME = "Category";
-    public static final String EXPENSE_COLUMN_ID = "id";
-    public static final String EXPENSE_COLUMN_CATEGORY_NAME = "category_name";
-    public static final String EXPENSE_COLUMN_CATEGORY_BUDGET = "budget";
-    public static final String EXPENSE_COLUMN_CATEGORY_IDENTIFIER = "identifier";
+    public static final String CATEGORY_TABLE_NAME = "Category";
+    public static final String CATEGORY_COLUMN_ID = "id";
+    public static final String CATEGORY_COLUMN_CATEGORY_NAME = "category_name";
+    //public static final String CATEGORY_COLUMN_BUDGET_NAME = "budget";
+    //public static final String EXPENSE_COLUMN_CATEGORY_IDENTIFIER = "identifier";
 
     public static final String EXPENSE_TABLE_ADD = "Add_Expense";
     public static final String EXPENSE_ADD_COLUMN_ID = "add_id";
@@ -61,14 +58,15 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
-    public void insertCategory(String category_name) {
+    public void insertCategory(String category_name, String budgetAmount) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(EXPENSE_COLUMN_CATEGORY_NAME, category_name);//column name, column value
+        values.put(CATEGORY_COLUMN_CATEGORY_NAME, category_name);//column name, column value
+        //values.put(CATEGORY_COLUMN_BUDGET_NAME, budgetAmount);
 
         // Inserting Row
-        db.insert(EXPENSE_TABLE_NAME, null, values);//tableName, nullColumnHack, ContentValues
+        db.insert(CATEGORY_TABLE_NAME, null, values);//tableName, nullColumnHack, ContentValues
         db.close(); // Closing database connection
 
     }
@@ -105,7 +103,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public int numberOfRows() {
         SQLiteDatabase db = this.getReadableDatabase();
-        int numRows = (int) DatabaseUtils.queryNumEntries(db, EXPENSE_TABLE_NAME);
+        int numRows = (int) DatabaseUtils.queryNumEntries(db, CATEGORY_TABLE_NAME);
         return numRows;
     }
 
@@ -115,13 +113,14 @@ public class DBHelper extends SQLiteOpenHelper {
         return numRowsAdd;
     }
 
-    public boolean updateCategory(Integer id, String name) {
+    public boolean updateCategory(Integer id, String name/*, String budget*/) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put("id", id);
-        contentValues.put("category_name", name);
+        contentValues.put(CATEGORY_COLUMN_ID, id);
+        contentValues.put(CATEGORY_COLUMN_CATEGORY_NAME, name);
+        //contentValues.put(CATEGORY_COLUMN_BUDGET_NAME, budget);
 
-        db.update("Category", contentValues, EXPENSE_COLUMN_ID+ "=" +id, null);
+        db.update(CATEGORY_TABLE_NAME, contentValues, CATEGORY_COLUMN_ID + "=" +id, null);
         return true;
     }
 
@@ -129,29 +128,29 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues contentValues = new ContentValues();
-        contentValues.put("id", id);
-        contentValues.put("category_add", name);
+        contentValues.put(EXPENSE_ADD_COLUMN_ID, id);
+        contentValues.put(EXPENSE_ADD_COLUMN_CATEGORY_ADD, name);
 
-        db.update("Add_Expense", contentValues, EXPENSE_COLUMN_ID + "=" +id , new String[]{name});
+        db.update(EXPENSE_TABLE_ADD, contentValues, CATEGORY_COLUMN_ID + "=" +id , new String[]{name});
         return true;
     }
 
     public boolean updateCategoryAdd(Integer id, String category_add, String amount, String date, String note) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put("add_id", id);
-        contentValues.put("category_add", category_add);
-        contentValues.put("amount", amount);
-        contentValues.put("date", date);
-        contentValues.put("note", note);
+        contentValues.put(EXPENSE_ADD_COLUMN_ID, id);
+        contentValues.put(EXPENSE_ADD_COLUMN_CATEGORY_ADD, category_add);
+        contentValues.put(EXPENSE_ADD_COLUMN_AMOUNT, amount);
+        contentValues.put(EXPENSE_ADD_COLUMN_DATE, date);
+        contentValues.put(EXPENSE_ADD_COLUMN_NOTE, note);
 
-        db.update("Add_Expense", contentValues,EXPENSE_ADD_COLUMN_ID+ "=" +id , null );
+        db.update(EXPENSE_TABLE_ADD, contentValues,EXPENSE_ADD_COLUMN_ID+ "=" +id , null );
         return true;
     }
 
     public boolean deleteCategory(String value) {
         SQLiteDatabase db = this.getWritableDatabase();
-        return db.delete(EXPENSE_TABLE_NAME, EXPENSE_COLUMN_CATEGORY_NAME + "='" + value +"' ;", null) > 0;
+        return db.delete(CATEGORY_TABLE_NAME, CATEGORY_COLUMN_CATEGORY_NAME + "='" + value +"' ;", null) > 0;
     }
 
     public boolean deleteAddCategory(String value) {
@@ -173,7 +172,7 @@ public class DBHelper extends SQLiteOpenHelper {
         res.moveToFirst();
 
         while (res.isAfterLast() == false) {
-            array_list.add(res.getString(res.getColumnIndex(EXPENSE_COLUMN_CATEGORY_NAME)));
+            array_list.add(res.getString(res.getColumnIndex(CATEGORY_COLUMN_CATEGORY_NAME)));
             res.moveToNext();
         }
         return array_list;
